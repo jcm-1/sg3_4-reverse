@@ -1,25 +1,23 @@
-# sg4b-reverse
-Texscan MSI SpectraGen 4B ROM reverse engineering
-
-Supports reverse engineering of the Texscan MSI SpectraGen 4B ROM version 5.7, to understand how to connect with it (does not aim at full reverse).
+# sg3_4-reverse
+Texscan MSI SpectraGen CompuVID 3/4 Operations Reverse Engineering
+A project to understand the internal workings and communications protocols of the Texscan MSI CompuVID 3 and 4 systems.
 
 # Texscan
-
 https://cg-wiki.org/texscan_msi/sg4b
 
-# ROMs:
+# Super Nerdy Assembly File Stuff:
+
+## ROMs:
 
 U20.BIN : Main Boot ROM, 16K, mapped 0x0000 - 0x3fff
 U21.BIN : 16K, mapped 0x8000 - 0x7fff
 U22.BIN : Mostly data, 16K, mapped 0xc000 - 0xffff
 
-# How to use
+## How to use
 
 Under linux, install ``pasmo``. Run the ``doit.sh`` script and start hacking the ``rom-57.asm`` file. Any discrepancy in generation will immediately be highligted in the terminal.
 
-
-
-# Personal notes on the initial generation of assembly files
+## Personal notes on the initial generation of assembly files
 
 First, generation of a simple assembly file at correct address
 Then assembly of this file to generate the correct symbol file
