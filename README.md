@@ -1,8 +1,8 @@
 # sg3_4-reverse
-Texscan MSI SpectraGen CompuVID 3/4 Operations Reverse Engineering
+Texscan MSI CompuVID SpectraGen 3/4 Operations Reverse Engineering
 A project to understand the internal workings and communications protocols of the Texscan MSI CompuVID 3 and 4 systems.
 
-# Texscan
+# Info about the SpectraGen Systems
 https://cg-wiki.org/texscan_msi/sg4b
 
 # Super Nerdy Assembly File Stuff:
