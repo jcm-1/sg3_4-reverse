@@ -5,6 +5,21 @@ A project to understand the internal workings and communications protocols of th
 # Info about the SpectraGen Systems
 https://cg-wiki.org/texscan_msi/sg4b
 
+# Scripts
+## Demonstration Scripts
+WXWrite.ps1: Requires Windows PowerShell
+A PowerShell Script with GUI that will take data from the user, format it correctly, and send it to the SpectraGen.
+
+BatchFetch_WithGUI.py: Requires Python3 and pySerial
+Python with TKInter GUI that allows the user to fetch a series of pages from a SpectraGen
+
+BatchSend_WithGUI.py: Requires Python3 and pySerial
+Python with TKInter GUI that allows the user to send a series of pages from a previouisly fetched file to a SpectraGen
+
+## Scripts To Do
+WXWrite - needs to be converted to python for cross platform support
+WXProcessor - a script 
+
 # Super Nerdy Assembly File Stuff:
 
 ## ROMs:
