@@ -27,7 +27,7 @@ PageEditor - Allow creation of pages directly on a computer, or editing pages yo
 
 According to the user manual, The SpectraGen has other functions to allow downloading other state data, like page sequencing, etc. Needs to be reverse engineered.
 
-# Super Nerdy Assembly File Stuff:
+# Super Nerdy Assembly File Stuff from fstark:
 
 ## ROMs:
 
