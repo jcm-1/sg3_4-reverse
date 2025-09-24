@@ -1,6 +1,8 @@
 # sg3_4-reverse
 Texscan MSI CompuVID SpectraGen 3/4 Operations Reverse Engineering
-A project to understand the internal workings and communications protocols of the Texscan MSI CompuVID 3 and 4 systems.
+A project to understand the internal workings and communications protocols of the Texscan MSI CompuVID 3 and 4 systems.  
+
+The SpectraGen series was available with several extra features and a companion software package for the IBM PC. There is no technical information on how these systems work, and the PC software package is lost to time. This project amins to reverse engineer these functions and provide modern equivilants.  
 
 # Info about the SpectraGen Systems
 https://cg-wiki.org/texscan_msi/sg4b
@@ -16,9 +18,14 @@ Python with TKInter GUI that allows the user to fetch a series of pages from a S
 BatchSend_WithGUI.py: Requires Python3 and pySerial  
 Python with TKInter GUI that allows the user to send a series of pages from a previouisly fetched file to a SpectraGen  
 
-## Scripts To Do
-WXWrite - needs to be converted to python for cross platform support
-WXProcessor - a script 
+## Scripts To Do/Plans
+WXWrite - needs to be converted to python for cross platform support  
+WXProcessor - a script that can receive piped weather data, format it, and stream it to the Spectragen. Useful for integration into other toolchains.  
+SendProcessor - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains.  
+FetchProcessor - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains.  
+PageEditor - Allow creation of pages directly on a computer, or editing pages you've downloaded from a SpectraGen.  
+
+According to the user manual, The SpectraGen has other functions to allow downloading other state data, like page sequencing, etc. Needs to be reverse engineered.
 
 # Super Nerdy Assembly File Stuff:
 
