@@ -2,7 +2,7 @@
 Texscan MSI CompuVID SpectraGen 3/4 Operations Reverse Engineering  
 A project to understand the internal workings and communications protocols of the Texscan MSI CompuVID 3 and 4 systems.  
 
-The SpectraGen series was available with several extra features and a companion software package for the IBM PC. There is no technical information on how these systems work, and the PC software package is lost to time. This project amins to reverse engineer these functions and provide modern equivilants.  
+The SpectraGen series was available with several extra features and a companion software package for the IBM PC. There is no technical information on how these systems work, and the PC software package is lost to time. This project aims to reverse engineer these functions and provide modern equivalents.  
 
 # Info about the SpectraGen Systems
 https://cg-wiki.org/texscan_msi/sg4b
