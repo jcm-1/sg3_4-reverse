@@ -7,6 +7,41 @@ Joe Strosnider
 When sending between units, it's more reliable to use the device CHANNEL NAME (SET CHN menu)
 than the device system name (CPU board switches)
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Known Message Types
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    K   Remote "KEYBOARD" command       8BE5 in rom
+    E - Remote "Edit"                   8BE9 in rom
+    
+    B - "BATCH" Message                 8BED in rom
+            "P" - Page
+    
+    C - [43]    "COMPLETE" Message      8BF1 in rom
+                B - Batch
+                G - Unknown
+        
+    Z - Explicit No-Access Response     8BF5 in rom
+    
+    F - "FETCH"
+            P - Page
+            A - Unknown
+            I - Unknown
+            E - Unknown
+            
+    S - "SEND"
+            P - Page
+            E - Unknown
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"E" Message Protocol
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+
+
+
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Authorization Handshake for the BATCH command
@@ -118,143 +153,117 @@ to a space. That is totally possible!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Page Data Format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        [55 AA]		Magic Number: 2 Bytes
-        [XX XX]		"SYSTEM NAME": 2 Bytes.
-        [53]		Message Type: 1 byte. "S", probably meaning "SEND"
-        [50]		Message Subtype: 1 Byte. "P", probably meaning "PAGE"
+Display Type and Speed is an unknown!
 
-        [XX][XX]	Page Number, little endian: 2 bytes.
-                        If a Fetch: This is the page number in the responder's memory that it is sending to the Initiator.
-                        If a Send: This is the page number where the initiator wants the responder to store the page in the responder's memory.
+        Index 0     [55 AA]		Magic Number: 2 Bytes
+        Index 2     [XX XX]		"SYSTEM NAME": 2 Bytes.
+        Index 4     [53]		Message Type: 1 byte. "S", probably meaning "SEND"
+              5     [50]		Message Subtype: 1 Byte. "P", probably meaning "PAGE"
+
+              6     [XX][XX]	Page Number, little endian: 2 bytes.
+                                    If a Fetch: This is the page number in the responder's memory that it is sending to the Initiator.
+                                    If a Send: This is the page number where the initiator wants the responder to store the page in the responder's memory.
         
-        [XX] 		Checksum
-                        xor first byte with 2nd byte, then xor result with 0x20, then xor result with B8
+              8     [XX] 		Header Checksum
+                                   xor first byte with 2nd byte, then xor result with 0x20, then xor result with B8
         
-        [XX]		Page Skip/Page Link/Page Wait values: 1 Byte
-        			Bit 7-3: unknown (always 0)
-        			Bit 2: Page Wait
-        			Bit 1: Page Link
-        			Bit 0: Page Skip
+              9     [XX]		Page Skip/Page Link/Page Wait values: 1 Byte
+        			            Bit 7-3: unknown (always 0)
+        			            Bit 2: Page Wait
+        			            Bit 1: Page Link
+        			            Bit 0: Page Skip
 
-        [XX]		DISPLAY TIME: 1 Byte
-        			Bits 6-0: DISPLAY TIME value from 0x00 to 0x63 (zero to 99 in decimal)
+             10     [XX]		DISPLAY TIME: 1 Byte
+        			            Bits 6-0: DISPLAY TIME value from 0x00 to 0x63 (zero to 99 in decimal)
 
-        [xx xx]		Unknown: 2 Bytes. These two values change seemingly at random
-            		Values seen: 10 02, 10 03, 20 04
+             11     [xx]        DISPLAY SPEED: 1 Byte.
+                                ... see field description below
+        
+             12     [xx]		DISPLAY TYPE: 1 Byte.
+                                ... see field description below
 
-        [XX..XX]    DISPLAY TIME WINDOW Field: 6 bytes
-                    ... see field description below
+             13     [XX][XX][XX]    DISPLAY TIME WINDOW Field: 6 bytes  
+             16     [XX][XX][XX]     ... see field description below
 
-        [XX]		"LINE LEVELS":  1 byte
-                    ... see field description below
+             19     [XX]		"LINE LEVELS":  1 byte
+                                ... see field description below
+                    
+                    [XX]        Unknown: 1 byte. Observed to always be 0x00
+        
+                    [XX]        Tape Actions and Player Number: 1 Byte
+                                ... see field description below
+                    
+                    [XX]          Unknown: 1 byte. Observed to always be 0x00
+                    [XX]          Unknown: 1 byte. Observed to always be 0x00
+                    [XX]          Unknown: 1 byte. Observed to always be 0x00
 
-        [XX..XX]	Unknown: 5 bytes. Observed to always be 0x00
+                    [XX..XX]	LINE DISPLAY ATTRIBUTES: 32 bytes (eight fields).
+                                ... see field description below
 
-        [XX..XX]	LINE DISPLAY ATTRIBUTES: 32 bytes (eight fields).
-                    ... see field description below
+                    [XX..XX]	PAGE DATA: 320 bytes
+        		                ... all printable page data and inline control characters
 
-        [XX..XX]	PAGE DATA: 320 bytes
-        		    ... all printable page data and inline control characters
+                    [XX]		Unknown: 1 byte. Observed to always be 0x00
 
-        [XX]		Unknown: 1 byte. Observed to always be 0x00
-
-        [XX]		Display Type and Speed - 1 byte
-		            ... see field description below
+                    [XX]		Page Checksum: 1 byte
+                                ... see field description below
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-LINE DISPLAY ATTRIBUTE FIELD description: 4 bytes.
+DISPLAY TIME WINDOW Field: 6 bytes [offset 13 bytes, if zero indexed]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	A standard blue page after ATTR ERASE is [80 01 C9 30]
+        [XX]		FIRST DAY: 1 Byte
+        			00 = IGNORE TIME
+        			01-07 - SUN-SAT
+        			08 - ALL DAYS
+                    
+        [XX]		FIRST DAY HOURS: 1 Byte
+                    all hours   00  00000000
+                    all other real hours stored as the literal hour
+                    
+        			AM encoded as 1-12 with MSB unset: 1 is 01
+        			PM encoded as 1-12 with MSB set: 1 is 81
+                    
+        [XX]		FIRST DAY MINS: 1 Byte.
+                    all hours   00
+                    Otherwise, minutes are stored as literal number from 0-59
+                    
 
-	Byte 1- LINE COLOR     BACKGROUND   FOREGROUND
-        			80 = 	BLUE		WHITE
-        		    81 = 	RED         WHITE
-        			82 = 	GREEN		WHITE
-        			83 = 	WHITE		DK BLUE
-        			84 = 	YELLOW		OLIVE
-        			85 = 	OLIVE		YELLOW
-        			86 =	VIOLET		WHITE
-        			87 = 	BLACK		WHITE
-        			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        			88 = 	BLUE		YELLOW
-        		    89 = 	RED         YELLOW
-        			8A = 	DK GREEN	YELLOW
-        			8B = 	WHITE		LT BLUE
-        			8C = 	YELLOW		DK GREEN
-        			8D = 	BROWN		YELLOW
-        			8E =	PINK		VIOLET
-        			8F = 	BLACK		WHITE
-        			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        			90 = 	WHITE		BLUE
-        		    91 = 	WHITE		RED
-        			92 = 	GREEN		RED
-        			93 = 	LT BLUE		WHITE
-        			94 = 	BLACK		YELLOW
-        			95 = 	YELLOW		BLACK?
-        			96 =	WHITE		VIOLET
-        			97 = 	BLACK		WHITE
-        			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        			98 = 	YELLOW		BLUE
-        			99 = 	PINK		RED
-        			9A = 	BUFF		GREEN
-        			9B = 	MID BLUE	WHITE
-        			9C = 	BLACK		YELLOW
-        			9D = 	BRN         BLACK
-        			9E = 	VIOLET		PINK
-        			9F = 	BLACK		WHITE
+        ######################################################################
+        [XX]		LAST DAY: 1 Byte
+        			00 = IGNORE TIME
+        			01-07 - SUN-SAT
+        			08 - ALL DAYS
+                    
+        [XX]		LAST DAY HOURS: 1 Byte
+                    all hours   00  00000000
+                    all other real hours stored as the literal hour
+                    
+        			AM encoded as 1-12 with MSB unset: 1 is 01
+        			PM encoded as 1-12 with MSB set: 1 is 81
+                    
+        [XX]		LAST DAY MINS: 1 Byte.
+                    all hours   00
+                    Otherwise, minutes are stored as literal number from 0-59
+        
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DISPLAY SPEED field - 1 byte
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    SLOW    08      00001 000
+                    MEDIUM  10      00010 000
+                    FAST    20      00100 000
 
-	Byte 2: LINE SEPERATIONS, line heights
-		Bit 7-6: Line Positions
-			00......	No lines
-			01......	Underline
-			10......	Overline
-			11......	Underline and Overline
-
-		Bit 5-3: Line Color
-			These color vary depending on the background color.
-			The ones shown here are for a blue background.
-			blue		..000...
-			red		    ..001...
-			green		..010...
-			light blue	..011...
-			yellow		..100...
-			olive		..101...
-			purple		..110...
-			black      	..111...
-
-		Bit 2-0: Line Height
-			thinnest line height  .....000
-			thickest line height  .....111
-
-	Byte 3:	Font Styles and Character Widths
-		Bits 7-5: Edge Thickness
-			001.....	thickest edge
-			011.....	thick edge
-			101.....	thin edge
-			110.....	no edge
-
-		Bit 4: Font Type
-			...0....	No Outline
-			...1....	Outline
-
-		Bit 3: Proportional Spacing?
-			....0...	Prop Spacing
-			....1...	Normal Spacing
-
-		Bits 2-0: Character Width
-			.....000	width 1	(40 char)
-				-- thru --
-			.....111	width 8 (8 char)
-
-	Byte 4: Character Border, etc. (only on 4B?)
-		Bit 7-6: Character border
-			00......	no border
-			01......	thin black border
-			10......	char is outlined with its color, and inside is the background color
-			11......	char is outlined with its color, and inside is black for dark colors, white for yellow and white
-
-		Bits 5-0: Unknown. Observed to always be 0
-
+It seems like DISPLAY SPEED and DISPLAY TYPE were supposed to be a single field, but
+a programming error that made it into production made them seperate fields,
+so CompuVid just kept it that way. I could be totally wrong.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+DISPLAY TYPE field - 1 byte
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    BANG        01  00000 001
+                    SPLASH      02  00000 010
+                    CRAWL       03  00000 011
+                    ROLL        04  00000 100
+                    PAGE PRINT  05  00000 101
+                    
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 "LINE LEVELS" field - 1 byte, encoded oddly. Probably XOR'd with something.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -266,10 +275,10 @@ LINE DISPLAY ATTRIBUTE FIELD description: 4 bytes.
 			P = 11 (0x03)
 
 			Locations of the required bits in this byte
-			1 [...H...L]
-			2 [..H...L.]
-			3 [.H...L..]
-			4 [H...L...]
+			1 [...H ...L]
+			2 [..H. ..L.]
+			3 [.H.. .L..]
+			4 [H... L...]
 
 			Here are some examples.
 			
@@ -299,53 +308,158 @@ LINE DISPLAY ATTRIBUTE FIELD description: 4 bytes.
 			LNNN = 10 0001 0000
 			HNNN = 01 0000 0001
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Tape Actions and Player Number
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    Bits 7-6:   Unknown
+    
+    Bits 5-4: Tape Actions
+            ..00....    N=None
+            ..01....    P=Play
+            ..10....    S=Stop
+            ..11....    R=Rewind
+    
+
+    Bits 3-0: Player Number
+            ....0000    Video B
+            ....0001    VTR 1
+            ....0010    VTR 2
+            ....0011    VTR 3
+            ....0100    VTR 4
+            ....0101    VTR 5
+            ....0110    VTR 6
+            ....0111    VTR 7
+            ....1000    VTR 8
+            ....1001    VTR 9
+            ....1010    VTR 10 
+            ....1011    VTR 11
+            ....1100    VTR 12
+            ....1101    VTR 13
+            ....1110    VTR 14
+            ....1111    Video A 
+                      
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+LINE DISPLAY ATTRIBUTE FIELD description: 4 bytes.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	A standard blue page after ATTR ERASE is [80 01 C9 30]
+                                             80 06 C9 30
+
+	Byte 1: Line Fill Options
+    
+        Bit 7: EXT Video
+            No External     0.......
+            External        1.......
+
+        Bits 6-5:   Unknown
+        
+        Bits 4-0: Background/Foreground Color Combo
+    
+                                        BACKGROUND   FOREGROUND
+                    00      ...00000    BLUE		WHITE
+        		    01      ...00001    RED         WHITE
+        		    02      ...00010    GREEN		WHITE
+        		    03      ...00011    WHITE		DK BLUE
+        		    04      ...00100    YELLOW		OLIVE
+        		    05      ...00101    OLIVE		YELLOW
+        		    06      ...00110    VIOLET		WHITE
+        		    07      ...00111    BLACK		WHITE
+        			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        		    08      ...01000    BLUE		YELLOW
+        		    09      ...01001    RED         YELLOW
+        		    0A      ...01010    DK GREEN	YELLOW
+        		    0B      ...01011    WHITE		LT BLUE
+        		    0C      ...01100    YELLOW		DK GREEN
+        		    0D      ...01101    BROWN		YELLOW
+        		    0E      ...01110    PINK		VIOLET
+        		    0F      ...01111    BLACK		WHITE
+        			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    10      ...10000    WHITE		BLUE
+                    11      ...10001    WHITE		RED
+                    12      ...10010    GREEN		RED
+                    13      ...10011    LT BLUE		WHITE
+                    14      ...10100    BLACK		YELLOW
+                    15      ...10101    YELLOW		BLACK?
+                    16      ...10110    WHITE		VIOLET
+                    17      ...10111    BLACK		WHITE
+        			~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                    18      ...11000    YELLOW		BLUE
+                    19      ...11001    PINK		RED
+                    1A      ...11010    BUFF		GREEN
+                    1B      ...11011    MID BLUE	WHITE
+                    1C      ...11100    BLACK		YELLOW
+                    1D      ...11101    BRN         BLACK
+                    1E      ...11110    VIOLET		PINK
+                    1F      ...11111    BLACK		WHITE
+
+	Byte 2: LINE SEPERATIONS & CHARACTER HEIGHTS
+		Bit 7-6: Seperator Type       
+			None             00......	
+			Underline        01......	
+			Overline         10......	
+			Both             11......	
+
+		Bit 5-3: Seperator Color
+			These color vary depending on the background color.
+			The ones shown here are for a blue background.
+			blue             ..000...
+			red              ..001...
+			green            ..010...
+			white            ..011...
+			yellow		     ..100...
+			olive            ..101...
+			purple		     ..110...
+			black            ..111...
+
+		Bit 2-0: Line Height
+			Shortest Chars   .....000
+			Tallest Chars    .....111
+
+	Byte 3:	Font Styles and Character Widths
+		Bits 7-5: Drop Shadow
+			000.....	Largest Shadow
+			111.....	no shadow
+
+		Bit 4: Font Type
+			...0....	Primary Font
+			...1....	Alternate Font
+
+		Bit 3: Proportional Spacing?
+			....0...	Prop Spacing
+			....1...	Normal Spacing
+
+		Bits 2-0: Character Width
+			.....000	width 1	(40 char)
+				-- thru --
+			.....111	width 8 (8 char)
+
+	Byte 4: Character Border, etc. (only on 4B?)
+		Bit 7-6: Character border
+        30  00110000
+        70  01110000
+        B0  10110000
+        F0  11110000
+			00......	no border
+			01......	thin black border
+			10......	char is outlined with its color, and inside is the background color
+			11......	char is outlined with its color, and inside is black for dark colors, white for yellow and white
+
+        Bits 5-4: Unknown. Observed to always be 1
+            ..11....
+            
+		Bits 3-0: Unknown. Observed to always be 0
+            ....0000
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-DISPLAY TIME WINDOW Field: 6 bytes
+Page Checksum field - 1 byte
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        [XX]		FIRST DAY: 1 Byte
-        			00 = IGNORE TIME
-        			01-07 - SUN-SAT
-        			08 - ALL DAYS
-                    
-        [XX]		FIRST DAY HOURS: 1 Byte
-        			AM encoded as 1-12 with MSB unset
-        			PM encoded as 1-12 with MSB set
-                    
-        [XX]		FIRST DAY MINS: 1 Byte.
+This is an XOR of the entire page data, starting from the byte immediately after
+the header checksum, through the last byte in the page.
 
-        [XX]		LAST DAY: 1 Byte
-        			00 = IGNORE TIME
-        			01-07 - SUN-SAT
-        			08 - ALL DAYS
-                    
-        [XX]		LAST DAY HOURS: 1 Byte
-        			AM encoded as 1-12 with MSB unset
-        			PM encoded as 1-12 with MSB set
-                    
-        [XX]		LAST DAY MINS: 1 Byte.
-        
-        
-        
-        
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Display Type and Speed field - 1 byte
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            The actual value of this byte is your desired value, XORd with "DISPLAY TIME"
-  		    Values shown below are literals.
-
-  			Bit 7-6:
-  				always 00......
-  				final value changed only by XOR with DISPLAY TIME
-
-  			Bits 5-3: Display Speed
-  				xx001xxx = slow speed
-  				xx010xxx = medium speed
-  				xx100xxx = high speed
-   	
-  			Bits 2-0: Display Type
-  				xxxxx001 = BANG
-  				xxxxx010 = SPLASH
-  				xxxxx011 = CRAWL
-  				xxxxx100 = ROLL	
-  				xxxxx101 = PAGE PRINT
+Python Code to explain how it works.
+    def ChecksumPage(array,start,end):
+        checksum=0
+        for i in range(start,end):
+            checksum = checksum ^ array[i]
+        return checksum
+    
+    
