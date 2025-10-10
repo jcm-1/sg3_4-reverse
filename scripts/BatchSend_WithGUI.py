@@ -154,9 +154,12 @@ class CoreGUI(object):
             ArrayToSend[Offset+6] = page_number[0]
             ArrayToSend[Offset+7] = page_number[1]
 
-            # Checksum each page
+            # Generate system name checksum for every page
             CheckSum0 = Offset+8
             ArrayToSend[CheckSum0] = CalculateChecksum(page_number,184)   # XOR = B8
+
+            #checkum page data
+            #ArrayToSend[Offset-1] = ChecksumPage(G_content_array,Offset+14,Offset+379)
 
     # LETS GO!
         WriteText(self.text_box,"Waiting for serial port to settle...\n")
@@ -241,6 +244,9 @@ class CoreGUI(object):
             SetFileLabel(self.FileLabel,FileLabelText,b"")
             return
         
+        # checksum the page
+        # print (ChecksumPage(G_content_array,14,379))
+
         # check the length of the file
         if (len(G_content_array) % 379 != 0):
             WriteText(self.text_box,"ERROR: File is the wrong size, can't be a data file.")
@@ -275,7 +281,8 @@ class CoreGUI(object):
         self.DestPage.delete("1.0", tk.END)         # Enable the Destination Page text box.
         self.DestPage.insert('1.0', DestPage)
         self.DestPage.grid()
-
+    ### end open_file_dialog
+    
     def InitUI(self):
         # Create a Text widget to display the output
         self.text_box = tk.Text(self.parent, wrap='word', height = 19, width=70)
@@ -403,6 +410,12 @@ def CalculateChecksum(data,xor):
     step2 = step1 ^ 32                          # then, you xor result with 0x20
     CheckSum = step2 ^ xor                 # then, you xor result with 255
     return CheckSum
+
+def ChecksumPage(array,start,end):
+    checksum=0
+    for i in range(start,end):
+        checksum = checksum ^ array[i]
+    return checksum
 
 # Initialze the GUI
 root = tk.Tk()
