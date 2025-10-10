@@ -16,14 +16,16 @@ BatchFetch_WithGUI.py: Requires Python3 and pySerial
 Python with TKInter GUI that allows the user to fetch a series of pages from a SpectraGen  
 
 BatchSend_WithGUI.py: Requires Python3 and pySerial  
-Python with TKInter GUI that allows the user to send a series of pages from a previouisly fetched file to a SpectraGen  
+Python with TKInter GUI that allows the user to send a series of pages from a previouisly fetched file to a SpectraGen
+
+PageEditor_WithGUI.py
+PageEditor - Allows creation of pages directly on a computer, or editing pages you've downloaded from a SpectraGen.  
 
 ## Scripts To Do/Plans
 WXWrite - needs to be converted to python for cross platform support  
 WXProcessor - a script that can receive piped weather data, format it, and stream it to the Spectragen. Useful for integration into other toolchains.  
 SendProcessor - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains.  
 FetchProcessor - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains.  
-PageEditor - Allow creation of pages directly on a computer, or editing pages you've downloaded from a SpectraGen.  
 
 According to the user manual, The SpectraGen has other functions to allow downloading other state data, like page sequencing, etc. Needs to be reverse engineered.
 
