@@ -11,7 +11,7 @@ https://cg-wiki.org/texscan_msi/sg4b
 ## Prerequesites
 PowerShell scripts require PowerShell 2 or newer on Windows 64 bit  
   
-Python scrips require a GUI based system, Python 3, pyserial and Pillow  
+Python scrips require a GUI based system, Python 3, PySerial and Pillow  
 PySerial: pip install pyserial  
 Pillow: pip install pillow  
 
@@ -19,20 +19,22 @@ Pillow: pip install pillow
 **WXWrite.ps1**: Requires Windows PowerShell  
 A PowerShell Script with GUI that will take weather data from the user, format it correctly, and send it to the SpectraGen.  
 
-**BatchFetch_WithGUI.py**: Requires Python3 and pySerial (pip install pyserial)  
+**BatchFetch_WithGUI.py**: Requires Python3 and pySerial *(pip install pyserial)*  
 GUI based script that allows the user to fetch a series of pages from a SpectraGen  
 
-**BatchSend_WithGUI.py**: Requires Python3 and pySerial (pip install pyserial)  
+**BatchSend_WithGUI.py**: Requires Python3 and pySerial *(pip install pyserial)*  
 GUI based script that allows the user to send a series of pages from a previouisly fetched file to a SpectraGen
 
-**PageEditor_WithGUI.py**: Requires Python3, pySerial (pip install pyserial) and Pillow (pip install pillow)
-PageEditor - Allows creation of new pages directly on a computer, or editing pages you've downloaded from a SpectraGen.  
+**PageEditor_WithGUI.py**  
+Requires Python3, pySerial *(pip install pyserial)* and Pillow *(pip install pillow)*
+Requires the TTF Font and PNG file to reside in the same directory as the Page Editor Script.
+Allows creation of new pages directly on a computer, or editing pages you've downloaded from a SpectraGen.  
 
 ## Scripts To Do/Plans
-WXWrite - needs to be converted to python for cross platform support  
-WXProcessor - a script that can receive piped weather data, format it, and stream it to the Spectragen. Useful for integration into other toolchains.  
-SendProcessor - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains.  
-FetchProcessor - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains.  
+**WXWrite** - needs to be converted to python for cross platform support  
+**WXProcessor** - a script that can receive piped weather data, format it, and stream it to the Spectragen. Useful for integration into other toolchains.  
+**SendProcessor** - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains.  
+**FetchProcessor** - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains.  
 
 According to the user manual, The SpectraGen has other functions to allow downloading other state data, like page sequencing, etc. Needs to be reverse engineered.
 
