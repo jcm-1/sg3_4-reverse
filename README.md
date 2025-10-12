@@ -16,17 +16,17 @@ PySerial: pip install pyserial
 Pillow: pip install pillow  
 
 ## Demonstration Scripts
-WXWrite.ps1: Requires Windows PowerShell  
-A PowerShell Script with GUI that will take data from the user, format it correctly, and send it to the SpectraGen.  
+**WXWrite.ps1**: Requires Windows PowerShell  
+A PowerShell Script with GUI that will take weather data from the user, format it correctly, and send it to the SpectraGen.  
 
-BatchFetch_WithGUI.py: Requires Python3 and pySerial  
-Python with TKInter GUI that allows the user to fetch a series of pages from a SpectraGen  
+**BatchFetch_WithGUI.py**: Requires Python3 and pySerial (pip install pyserial)  
+GUI based script that allows the user to fetch a series of pages from a SpectraGen  
 
-BatchSend_WithGUI.py: Requires Python3 and pySerial  
-Python with TKInter GUI that allows the user to send a series of pages from a previouisly fetched file to a SpectraGen
+**BatchSend_WithGUI.py**: Requires Python3 and pySerial (pip install pyserial)  
+GUI based script that allows the user to send a series of pages from a previouisly fetched file to a SpectraGen
 
-PageEditor_WithGUI.py
-PageEditor - Allows creation of pages directly on a computer, or editing pages you've downloaded from a SpectraGen.  
+**PageEditor_WithGUI.py**: Requires Python3, pySerial (pip install pyserial) and Pillow (pip install pillow)
+PageEditor - Allows creation of new pages directly on a computer, or editing pages you've downloaded from a SpectraGen.  
 
 ## Scripts To Do/Plans
 WXWrite - needs to be converted to python for cross platform support  
