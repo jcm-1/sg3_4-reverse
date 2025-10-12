@@ -23,13 +23,13 @@ A PowerShell Script with GUI that will take weather data from the user, format i
 GUI based script that allows the user to fetch a series of pages from a SpectraGen  
 
 **BatchSend_WithGUI.py**: Requires Python3 and pySerial *(pip install pyserial)*  
-GUI based script that allows the user to send a series of pages from a previouisly fetched file to a SpectraGen
+GUI based script that allows the user to send a series of pages from a previouisly fetched file to a SpectraGen  
 
 **PageEditor_WithGUI.py**  
-Requires Python3, pySerial *(pip install pyserial)* and Pillow *(pip install pillow)*
-Requires the TTF Font and PNG file to reside in the same directory as the Page Editor Script.
+Requires Python3, pySerial *(pip install pyserial)* and Pillow *(pip install pillow)*  
+Requires the TTF Font and PNG file to reside in the same directory as the Page Editor Script.  
 Allows creation of new pages directly on a computer, or editing pages you've downloaded from a SpectraGen.  
-
+  
 ## Scripts To Do/Plans
 **WXWrite** - needs to be converted to python for cross platform support  
 **WXProcessor** - a script that can receive piped weather data, format it, and stream it to the Spectragen. Useful for integration into other toolchains.  
