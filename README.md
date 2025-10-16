@@ -15,7 +15,7 @@ Python scrips require a GUI based system, Python 3, PySerial and Pillow
 PySerial: pip install pyserial  
 Pillow: pip install pillow  
 
-## Demonstration Scripts
+## Demonstration Scripts [/scripts]  
 **WxSend_WithGUI.py**: Requires Python3 and pySerial *(pip install pyserial)*  
 GUI based script that will take weather data from the user, format it correctly, and send it to the SpectraGen.  
 
@@ -40,6 +40,11 @@ A script to send test NOAA data to your unit to ensure it's working as you expec
 **NOAAProcessor** - a script to take a pre-processed NOAA update (i.e. channel, datetime, message) and send it to the Spectragen. Useful for integration into other toolchains and automation.  
 
 According to the user manual, The SpectraGen has other functions to allow downloading other state data, like page sequencing, etc. Needs to be reverse engineered.
+
+# Documenation [/docs]  
+Batch Send Protocol
+NOAA Protocol
+Weather Protocol
 
 ## Documentation To Do/Plans
 Document the NOAA protocol that the unit expects
