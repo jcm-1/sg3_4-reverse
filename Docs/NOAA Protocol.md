@@ -1,5 +1,5 @@
-Notes about the NOAA system on the SpectraGen 3B/4B
-
+#Notes about the NOAA system on the SpectraGen 3B/4B  
+  
 Baud Rate
 Because of the parsing engine on the unit, it is not fast enough to keep up with
 baud rates higher than 2400.
@@ -36,4 +36,5 @@ would be "LOW 30.[25 spaces]TOMORROW'S FORCAST FOR..."
 Dollar Sign Parsing
 When sending single $ characters, the unit will always "eat" the one you send.
 This is related to its parsing of the footer, as the $ is never expected to 
+
 exist in an NOAA message other than in the footer.
