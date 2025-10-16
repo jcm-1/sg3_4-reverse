@@ -16,7 +16,7 @@ PySerial: pip install pyserial
 Pillow: pip install pillow  
 
 ## Demonstration Scripts
-**WxSend_WithGUI.py**: Requires Windows PowerShell  
+**WxSend_WithGUI.py**: Requires Python3 and pySerial *(pip install pyserial)*  
 GUI based script that will take weather data from the user, format it correctly, and send it to the SpectraGen.  
 
 **BatchFetch_WithGUI.py**: Requires Python3 and pySerial *(pip install pyserial)*  
@@ -31,11 +31,17 @@ Requires the TTF Font and PNG file to reside in the same directory as the Page E
 Allows creation of new pages directly on a computer, or editing pages you've downloaded from a SpectraGen.  
   
 ## Scripts To Do/Plans
-**WXProcessor** - a script that can receive piped weather data, format it, and stream it to the Spectragen. Useful for integration into other toolchains.  
-**SendProcessor** - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains.  
-**FetchProcessor** - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains.  
+**WXProcessor** - a script that can receive piped weather data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
+**SendProcessor** - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
+**FetchProcessor** - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains and automation.
+**NOAA Test** - a script to send test NOAA data to your unit to ensure it's working as you expect  
+**NOAAProcessor** - a script to take a pre-processed NOAA update (i.e. channel, datetime, message) and send it to the Spectragen. Useful for integration into other toolchains and automation.  
 
 According to the user manual, The SpectraGen has other functions to allow downloading other state data, like page sequencing, etc. Needs to be reverse engineered.
+
+## Documentation To Do/Plans
+Document the NOAA protocol that the unit expects
+
 
 # Super Nerdy Assembly File Stuff from fstark:
 
