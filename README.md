@@ -7,7 +7,7 @@ The SpectraGen series was available with several extra features and a companion 
 # Info about the SpectraGen Systems
 https://cg-wiki.org/texscan_msi/sg4b
 
-# Scripts
+# Scripts [/scripts]
 ## Prerequesites
 PowerShell scripts require PowerShell 2 or newer on Windows 64 bit  
   
@@ -15,7 +15,7 @@ Python scrips require a GUI based system, Python 3, PySerial and Pillow
 PySerial: pip install pyserial  
 Pillow: pip install pillow  
 
-## Demonstration Scripts [/scripts]  
+## Demonstration Scripts  
 **WxSend_WithGUI.py**: Requires Python3 and pySerial *(pip install pyserial)*  
 GUI based script that will take weather data from the user, format it correctly, and send it to the SpectraGen.  
 
