@@ -27,7 +27,7 @@ GUI based script that allows the user to send a series of pages from a previouis
 
 **PageEditor_WithGUI.py**  
 Requires Python3, pySerial *(pip install pyserial)* and Pillow *(pip install pillow)*  
-Requires the TTF Font and PNG file to reside in the same directory as the Page Editor Script.  
+Requires the TTF Font to be properly installed in your system, and the PNG file to reside in the same directory as the Page Editor Script. These files are in [/fonts] in this repo.   
 Allows creation of new pages directly on a computer, or editing pages you've downloaded from a SpectraGen.  
 
 **NOAATest_WithGUI.py**  
