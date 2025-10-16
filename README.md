@@ -50,9 +50,10 @@ A script to send test NOAA data to your unit to ensure it's working as you expec
 **Full system settings batch**  
 
 # Documenation [/docs]  
-## Batch Send Protocol  
-## NOAA Protocol  
-## Weather Protocol  
+## Completed Documentation  
+**Batch Send Protocol**  
+**NOAA Protocol**  
+**Weather Protocol**  
 
 ## Documentation To Do/Plans
 AP Protocol  
