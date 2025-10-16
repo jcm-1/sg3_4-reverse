@@ -24,6 +24,7 @@ TOMORROW'S FORCAST FOR..."
 would be "LOW 30.[25 spaces]TOMORROW'S FORCAST FOR..."  
     
 ## Dollar Sign Parsing  
-When sending single $ characters, the unit will always "eat" the one you send.  
+When sending single $ characters, the unit will always "eat" the last one you send.  
 This is related to its parsing of the footer, as the $ is never expected to exist in an NOAA message other than in the footer.  
+
 
