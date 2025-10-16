@@ -38,22 +38,40 @@ A script to send test NOAA data to your unit to ensure it's working as you expec
 **SendProcessor** - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
 **FetchProcessor** - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains and automation.  
 **NOAAProcessor** - a script to take a pre-processed NOAA update (i.e. channel, datetime, message) and send it to the Spectragen. Useful for integration into other toolchains and automation.  
-
-According to the user manual, The SpectraGen has other functions to allow downloading other state data, like page sequencing, etc. Needs to be reverse engineered.
+**AP Protocol**  
+**UPI Protocol**  
+**REUTERS Protocol**  
+**STOCS Protocol**  
+**BROADCAST Protocol**  
+**DOW JONES Protocol**  
+  
+**External Floppy/Hard Drive sequencing protocol**  
+**Remote Time Protocol**  
+**Full system settings batch**  
 
 # Documenation [/docs]  
-Batch Send Protocol
-NOAA Protocol
-Weather Protocol
+## Batch Send Protocol  
+## NOAA Protocol  
+## Weather Protocol  
 
 ## Documentation To Do/Plans
-Document the NOAA protocol that the unit expects
+AP Protocol  
+UPI Protocol  
+REUTERS Protocol  
+STOCS Protocol  
+BROADCAST Protocol  
+DOW JONES Protocol  
+  
+External Floppy/Hard Drive sequencing protocol  
+Remote Time Protocol  
+Full system settings batch  
 
 
+
+  
 # Super Nerdy Assembly File Stuff from fstark:
 
 ## ROMs:
-
 U20.BIN : Main Boot ROM, 16K, mapped 0x0000 - 0x3fff
 U21.BIN : 16K, mapped 0x8000 - 0x7fff
 U22.BIN : Mostly data, 16K, mapped 0xc000 - 0xffff
