@@ -152,6 +152,18 @@ class CoreGUI(object):
         pagesarray = self.default_page_values
         self.KeyboardWindow = None
 
+    # Check that the font is installed.
+        if not "SpectraGen Complete" in list(tkfont.families()):
+            messagebox.showerror("Font Missing", "Please insure you have installed the 'Spectragen Complete' font.")
+            sys.exit()
+            return
+        
+    # Check that the font image is in the same directory as the script
+        if not os.path.isfile("font.png"):
+            messagebox.showerror("Glyph File Missing", "Please insure you have placed the 'font.png' file into the same directory as this script.")
+            sys.exit()
+            return
+        
     # line options header frame
         LinesOptionsHeaderFrame = tk.Frame(root, borderwidth=0, relief="groove")
         LinesOptionsHeaderFrame.grid(row=0, column=0, padx=(0,0), pady=0, sticky="W", columnspan=10)
