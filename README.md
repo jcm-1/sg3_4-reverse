@@ -29,12 +29,14 @@ GUI based script that allows the user to send a series of pages from a previouis
 Requires Python3, pySerial *(pip install pyserial)* and Pillow *(pip install pillow)*  
 Requires the TTF Font and PNG file to reside in the same directory as the Page Editor Script.  
 Allows creation of new pages directly on a computer, or editing pages you've downloaded from a SpectraGen.  
+
+**NOAATest_WithGUI.py**  
+A script to send test NOAA data to your unit to ensure it's working as you expect.  
   
 ## Scripts To Do/Plans
 **WXProcessor** - a script that can receive piped weather data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
 **SendProcessor** - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
 **FetchProcessor** - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains and automation.  
-**NOAA Test** - a script to send test NOAA data to your unit to ensure it's working as you expect.  
 **NOAAProcessor** - a script to take a pre-processed NOAA update (i.e. channel, datetime, message) and send it to the Spectragen. Useful for integration into other toolchains and automation.  
 
 According to the user manual, The SpectraGen has other functions to allow downloading other state data, like page sequencing, etc. Needs to be reverse engineered.
