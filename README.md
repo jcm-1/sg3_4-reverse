@@ -32,12 +32,16 @@ Allows creation of new pages directly on a computer, or editing pages you've dow
 
 **NOAATest_WithGUI.py**  
 A script to send test NOAA data to your unit to ensure it's working as you expect.  
+
+**TimeSend_WithGUI.py**  
+A script that takes your computer's current date and time and sends it to the unit. Automatically compensates for the unit's lack of Year 2000 support by calculating a calandar compatible with this year's calendar.   
   
 ## Scripts To Do/Plans
 **WXProcessor** - a script that can receive piped weather data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
 **SendProcessor** - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
 **FetchProcessor** - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains and automation.  
 **NOAAProcessor** - a script to take a pre-processed NOAA update (i.e. channel, datetime, message) and send it to the Spectragen. Useful for integration into other toolchains and automation.  
+  
 **AP Protocol**  
 **UPI Protocol**  
 **REUTERS Protocol**  
@@ -45,8 +49,7 @@ A script to send test NOAA data to your unit to ensure it's working as you expec
 **BROADCAST Protocol**  
 **DOW JONES Protocol**  
   
-**External Floppy/Hard Drive sequencing protocol**  
-**Remote Time Protocol**  
+**External Floppy/Hard Drive sequencing protocol**   
 **Full system settings batch**  
 
 # Documenation [/docs]  
