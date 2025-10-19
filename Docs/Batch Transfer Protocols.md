@@ -14,7 +14,7 @@ Known Message Types
     E - Remote "Edit"                   8BE9 in rom
     
     B - "BATCH" Message                 8BED in rom
-            "P" - Page
+            "G" - Unknown, but used when starting a page send
     
     C - [43]    "COMPLETE" Message      8BF1 in rom
                 B - Batch
@@ -31,16 +31,35 @@ Known Message Types
     S - "SEND"
             P - Page
             E - Unknown
+            T - Unknown, but responds to 12 or more bytes
+
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"E" Message Protocol
+Known Message SubTypes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C
+D
+E
+H
+I
+L
+M
+P
+R
+T
+V
+X
+
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Sequence from External device
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-
-
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+"E" Message Protocol - probably REMOTE EDIT
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,16 +69,18 @@ Authorization Handshake for the BATCH command
 		[55 AA]		Magic Number: 2 Bytes
 		[XX XX]		"SYSTEM NAME": 2 Bytes.
 		[42]		Message Type: 1 byte. "B", probably meaning "BATCH"
-		[50] 		Message Subtype: 1 Byte. "P", probably meaning "PAGE"
+		[47] 		Message Subtype: 1 Byte. "G", probably meaning "GO!"
         [00]        Unknown A: 1 Byte. Value always seems to be [00]
         [00]		Unknown B: 1 Byte. Value always seems to be [00]
-		[XX]		SYSTEM NAME Checksummed
+		[XX]		Header Checksum: 1 Byte
                       xor first byte with 2nd byte, then xor result with 0x20, then xor result with 0xDA
+
         
 	If the receiver's SYSTEM NAME matches what is sent, the receiver will respond with:
 		[AA AA AA AA AA]	Acknowledge - 5 Bytes
 
-	If the receiver's SYSTEM NAME does not match what is sent, the receiver will not respond. The Initiator will try to initate four more times before giving up and printing "NO ACCESS" on the screen.
+	If the receiver's SYSTEM NAME does not match what is sent, the receiver will not respond.
+       The Initiator will try to initate four more times before giving up and printing "NO ACCESS" on the screen.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -72,10 +93,10 @@ Description of a "SEND" request from the "BATCH" menu: from Initiator to Receive
 		[55 AA]		Magic Number: 2 Bytes
 		[XX XX]		"SYSTEM NAME": 2 Bytes.
         [43]		Message Type: 1 byte. "C", probably meaning "CLOSE COMMS"
-        [47]		Message Subtype: 1 Byte. "P", probably meaning "PAGE"
+        [47]		Message Subtype: 1 Byte. "G"
         [00]        Unknown A: 1 Byte. Value always seems to be [00]
         [00]		Unknown B: 1 Byte. Value always seems to be [00] 
-		[XX]		SYSTEM NAME Checksummed
+		[XX]		Header Checksum: 1 Byte
                       xor first byte with 2nd byte, then xor result with 0x20, then xor result with 0xDB
                     
         This send and response loop will continue until all pages are sent.
@@ -87,10 +108,10 @@ Description of a "SEND" request from the "BATCH" menu: from Initiator to Receive
         [55 AA]		Magic Number: 2 Bytes
         [BB BB]		"SYSTEM NAME" field, but always BB BB
         [43]		Message Type: 1 byte. "C", probably meaning "CLOSE COMMS"
-        [47]		Message Subtype: 1 Byte. "P", probably meaning "PAGE"
+        [47]		Message Subtype: 1 Byte. "G", probably meaning "GOOD"
         [00]        Unknown A: 1 Byte. Value always seems to be [00]
         [00]		Unknown B: 1 Byte. Value always seems to be [00]
-        [XX]        SYSTEM NAME Checksummed
+        [XX]        Header Checksum: 1 Byte
                         xor first byte with 2nd byte, then xor result with 0x20, then xor result with 0xD6
                         (although, it doesn't seem to matter what this byte is - the receiver doesn't seem to check it)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -108,7 +129,7 @@ Description of a "FETCH" request from the "BATCH" menu: where the Initiator is m
     	[46]		Message Type: 1 byte. "F", probably meaning "FETCH"
     	[50]		Message Subtype: 1 Byte. "P", probably meaning "PAGE"
         [XX][XX]	Page Number, little endian: 2 bytes.
-    	[XX]		Checksum of Page Number fetched: 1 Byte.
+    	[XX]		Header Checksum: 1 Byte
                         xor first byte with 2nd byte, then xor result with 0x20, then xor result with 0xAD
 
         Responder Sends:
@@ -123,7 +144,7 @@ Description of a "FETCH" request from the "BATCH" menu: where the Initiator is m
         [50]		Message Subtype: 1 Byte. "P", probably meaning "PAGE"
         [00]        Unknown A: 1 Byte. Value always seems to be [00]
         [00]		Unknown B: 1 Byte. Value always seems to be [00]
-        [XX]		Checksum: 1 Byte. Number of total pages sent XORd with 0xFF
+        [XX]		Header Checksum: 1 Byte
                     (although, it doesn't seem to matter what this byte is - the receiver doesn't seem to check it)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -136,8 +157,69 @@ but you requested a page beyond its maximum bounds
         [43]        Message Type: "C", probably meaning "CLOSE COMMS"
         [49]        Message Subtype: "I", probably meaning "INVALID"
         [XX][XX]	Page Number you tried to send, little endian: 2 bytes.
-        [xx]        Checksum: unknown how calculated
+        [xx]        Header Checksum: 1 Byte
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Description of a "TIME" command from Initiator(PC) to Receiver
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        This process only begins after the Authorization Handshake.
+        
+        Initiator Sends the Time:
+    	[55 AA]		Magic Number: 2 Bytes
+    	[XX XX]		"SYSTEM NAME": 2 Bytes.
+    	[46]		Message Type: 1 byte. "S", probably meaning "SEND"
+    	[50]		Message Subtype: 1 Byte. "T", probably meaning "TIME"
+        [00][00]	Always [00][00]: 2 Bytes
+    	[XX]		Header Checksum: 1 Byte
+        [XX..XX]    Time Data: 12 Bytes
+        [XX]        Payload Checksum
+
+        Receiver Responds with an ACK
+        [55 AA]		Magic Number: 2 Bytes
+        [XX XX]		"SYSTEM NAME" field
+        [43]		Message Type: 1 byte. "C", probably meaning "CLOSE COMMS"
+        [47]		Message Subtype: 1 Byte. "G", probably meaning "GOOD!"
+        [00]        1 Byte. Value always [00]
+        [00]		Byte. Value always [00]
+        [XX]        Header Checksum: 1 Byte
+        
+        Initiator sends it's own ACK
+        [55 AA]		Magic Number: 2 Bytes
+        [XX XX]		"SYSTEM NAME" field
+        [43]		Message Type: 1 byte. "C", probably meaning "CLOSE COMMS"
+        [47]		Message Subtype: 1 Byte. "G", probably meaning "GOOD!"
+        [00]        1 Byte. Value always [00]
+        [00]		Byte. Value always [00]
+        [XX]        Header Checksum: 1 Byte
+        
+    Time Data Format       
+        Byte    Meaning     System Power On Default Value
+        1       DAYOFWEEK	0    (Zero indexed: 0-6)
+        2       MONTH       1    (One indexed: 1-12)
+        3       DAYNUMBER	1    (One indexed: 1-31)
+        4       YEAR		88   (Last two digits of year: max range 0-99)
+        
+        5       HOUR		12   (Current hour)
+                                 (if you are in 12 hour time, just send 0-11)
+                                 (if you are in 24 hour time, send 0-23)
+                                 
+        6       MINUTE		0    (Current Minute: 0-59)
+        7       SECOND		0    (Current Second: 0-59)
+        8       AM/PM       0    0=AM, 1=PM
+        
+        9-10    STARTPAGE   x   Start Page number where your time is.
+                                Two bytes, little endian
+                                Default is 2 (\x0002)
+                                
+        11-12   ENDPAGE     x   End Page number where your time is.
+                                Two bytes, little endian
+                                Default is 2 (\x0002)
+                                
+        Yes, Virginia. You can -- for whatever reason -- shove the time on
+        a sequential number of pages. Maybe so you can set up the time
+        bar with a bunch of different colored pages that update every few
+        seconds? No clue. But it does it.
+        
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 SYSTEM NAME format
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
