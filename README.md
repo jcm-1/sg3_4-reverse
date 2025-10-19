@@ -41,6 +41,7 @@ A script that takes your computer's current date and time and sends it to the un
 **SendProcessor** - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
 **FetchProcessor** - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains and automation.  
 **NOAAProcessor** - a script to take a pre-processed NOAA update (i.e. channel, datetime, message) and send it to the Spectragen. Useful for integration into other toolchains and automation.  
+**TimeProcessor** - a script that simply sends the current date and time to the unit when run.  
   
 **AP Protocol**  
 **UPI Protocol**  
