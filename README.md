@@ -71,6 +71,8 @@ External Floppy/Hard Drive sequencing protocol
 Remote Time Protocol  
 Full system settings batch  
 
+Remote Keyboard terminal emulator
+
 
 
   
