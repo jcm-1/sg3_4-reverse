@@ -52,12 +52,12 @@ A script that takes your computer's current date and time and sends it to the un
   
 **External Floppy/Hard Drive sequencing protocol**   
 **Full system settings batch**  
-
+**Remote Keyboard terminal emulator**  
+  
 # Documenation [/docs]  
 ## Completed Documentation    
 **NOAA Protocol**  
 **Weather Protocol**  
-**Remote Keyboard terminal emulator**  
 
 ## Documentation To Do/Plans
 **Batch Send Protocol** - work still in progress.  
