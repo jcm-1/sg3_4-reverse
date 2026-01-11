@@ -11,10 +11,12 @@ https://cg-wiki.org/texscan_msi/sg4b
 ## Prerequisites  
 PowerShell scripts require PowerShell 2 or newer on Windows 64 bit  
   
-Python scrips require a GUI based system, Python 3, PySerial and Pillow  
+Python "GUI" scripts require a GUI based system
+All Scripts require: Python 3, PySerial, Pillow, argparse, requests
 PySerial: pip install pyserial  
 Pillow: pip install pillow
 ArgParse: pip install argparse
+Requests: pip install requests
 
 ## Demonstration Scripts  
 **WxSend_WithGUI.py**: Requires Python3 and pySerial *(pip install pyserial)*  
@@ -38,7 +40,7 @@ A script to send test NOAA data to your unit to ensure it's working as you expec
 A script that takes your computer's current date and time and sends it to the unit. Automatically compensates for the unit's lack of Year 2000 support by calculating a calandar compatible with this year's calendar.   
 
 ## Automation Scripts
-**NOAASend_CLI.py**: Requires Python3, argparse and pySerial *(pip install pyserial)* *(pip install argparse)*  
+**NOAASend_CLI.py**: Requires Python3, argparse, requets and pySerial *(pip install pyserial)* *(pip install argparse)*  
 A script to fetch a forecast from Weather.gov and send it to the Spectragen's NOAA function. Useful for integration into other toolchains and automation.  
 
 **TimeSend_CLI.py**: Requires Python3, argparse and pySerial *(pip install pyserial)* *(pip install argparse)*  
