@@ -13,7 +13,8 @@ PowerShell scripts require PowerShell 2 or newer on Windows 64 bit
   
 Python scrips require a GUI based system, Python 3, PySerial and Pillow  
 PySerial: pip install pyserial  
-Pillow: pip install pillow  
+Pillow: pip install pillow
+ArgParse: pip install argparse
 
 ## Demonstration Scripts  
 **WxSend_WithGUI.py**: Requires Python3 and pySerial *(pip install pyserial)*  
@@ -35,12 +36,15 @@ A script to send test NOAA data to your unit to ensure it's working as you expec
 
 **TimeSend_WithGUI.py**  
 A script that takes your computer's current date and time and sends it to the unit. Automatically compensates for the unit's lack of Year 2000 support by calculating a calandar compatible with this year's calendar.   
-  
+
+## Automation Scripts
+**NOAASend_CLI.py**: Requires Python3, argparse and pySerial *(pip install pyserial)* *(pip install argparse)*  
+A script to fetch a forecast from Weather.gov and send it to the Spectragen. Useful for integration into other toolchains and automation.  
+
 ## Scripts To Do/Plans
 **WXProcessor** - a script that can receive piped weather data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
 **SendProcessor** - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
 **FetchProcessor** - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains and automation.  
-**NOAAProcessor** - a script to take a pre-processed NOAA update (i.e. channel, datetime, message) and send it to the Spectragen. Useful for integration into other toolchains and automation.  
 **TimeProcessor** - a script that simply sends the current date and time to the unit when run.  
   
 **AP Protocol**  
