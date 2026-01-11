@@ -20,7 +20,7 @@ Requests: pip install requests
 
 ## Demonstration Scripts  
 **WxSend_WithGUI.py**: Requires Python3 and pySerial *(pip install pyserial)*  
-GUI based script that will take weather data from the user, format it correctly, and send it to the SpectraGen.  
+GUI based script that will take weather data from the user, format it correctly, and send it to the SpectraGen's WeatherView function.  
 
 **BatchFetch_WithGUI.py**: Requires Python3 and pySerial *(pip install pyserial)*  
 GUI based script that allows the user to fetch a series of pages from a SpectraGen  
