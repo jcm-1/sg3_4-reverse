@@ -48,7 +48,6 @@ A script to send the current date and time (as known by the computer unning the 
 **WXProcessor** - a script that can receive local weather station data, format it, and stream it to the Spectragen's WeatherView function. Useful for integration into other toolchains and automation.  
 **SendProcessor** - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
 **FetchProcessor** - a script that can receive piped fetch commands, format them, and stream them to the SpectraGen, then save the result to file or pipe it elsewhere. Useful for integration into other toolchains and automation.  
-**TimeProcessor** - a script that simply sends the current date and time to the unit when run.  
   
 **AP Protocol**  
 **UPI Protocol**  
