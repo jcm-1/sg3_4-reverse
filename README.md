@@ -41,6 +41,9 @@ A script that takes your computer's current date and time and sends it to the un
 **NOAASend_CLI.py**: Requires Python3, argparse and pySerial *(pip install pyserial)* *(pip install argparse)*  
 A script to fetch a forecast from Weather.gov and send it to the Spectragen's NOAA function. Useful for integration into other toolchains and automation.  
 
+**TimeSend_CLI.py**: Requires Python3, argparse and pySerial *(pip install pyserial)* *(pip install argparse)*  
+A script to send the current date and time (as known by the computer unning the script) to the Spectragen's CLK function. Useful for integration into other toolchains and automation.  
+
 ## Scripts To Do/Plans
 **WXProcessor** - a script that can receive local weather station data, format it, and stream it to the Spectragen's WeatherView function. Useful for integration into other toolchains and automation.  
 **SendProcessor** - a script that can receive piped page data, format it, and stream it to the Spectragen. Useful for integration into other toolchains and automation.  
