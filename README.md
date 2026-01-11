@@ -8,7 +8,7 @@ The SpectraGen series was available with several extra features and a companion 
 https://cg-wiki.org/texscan_msi/sg4b
 
 # Scripts [/scripts]
-## Prerequesites
+## Prerequisites  
 PowerShell scripts require PowerShell 2 or newer on Windows 64 bit  
   
 Python scrips require a GUI based system, Python 3, PySerial and Pillow  
